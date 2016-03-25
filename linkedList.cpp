@@ -1,22 +1,23 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
+struct Node {
+    int data;
+    Node *next;
+};
 class LinkedList{
-    struct Node {
-        int data;
-        Node *next;
-    };
+
 public:
+    Node* head;
     LinkedList(){
         head = NULL;
     }
     void addValue(int val){
-        Node *n = new Node();   
-        n->data = val;    
-        n->next = head;                              
-        head = n; 
-    } 
+        Node *n = new Node();
+        n->data = val;
+        n->next = head;
+        head = n;
+    }
     void createLoop(){
         Node* tempNode = head;
         Node* cycleNode = head->next;
@@ -24,8 +25,8 @@ public:
             tempNode=tempNode->next;
         }
         tempNode->next = cycleNode;
-    }  
-    void hasLoop()
+    }
+    Node* hasLoop()
     {
         if(head != NULL)
         {
@@ -42,16 +43,16 @@ public:
                     cout<<"there is no cycle" << endl;
                     break;
                 }
-                cout << "slownode: " << slowNode->data << endl;
-                cout << "fastnode: " << fastNode->data << endl;
+              //cout << "slownode: " << slowNode->data << endl;
+              //  cout << "fastnode: " << fastNode->data << endl;
                 if(fastNode==slowNode){
-                    cout << "The data of the node that creats the cycle is " << slowNode->data << endl;
+                    return slowNode;
                     break;
                 }
             }
         }
-    }   
-    void middleElement(){
+    }
+    Node* middleElement(){
         Node* fastNode = head;
         Node* slowNode = head;
         if(head != NULL){ // probably should add this to all the other functions
@@ -62,10 +63,10 @@ public:
                     break;
                 }
             }
-        cout << "the data of the middle element is " << slowNode->data << endl;
+        return slowNode;
         }
-    }     
-    int popValue(){
+    }
+    int popValue(){  Node* head;
         Node *n = head;
         int ret = n->data;
         head = head->next;
@@ -84,23 +85,8 @@ public:
             cout << tempNode->data << "->";
             tempNode = tempNode->next;
         }
-        
+
     }
 private:
-    Node* head;
+
 };
-int main() {
-    LinkedList list;
-    list.addValue(5);
-    list.addValue(10);
-    list.addValue(15);
-    list.addValue(20);
-    list.addValue(25);
-    list.addValue(30);
-    list.addValue(35);
-    //list.middleElement();
-    list.createLoop();
-    list.printList();
-    list.hasLoop();
-    return 0;
-}
