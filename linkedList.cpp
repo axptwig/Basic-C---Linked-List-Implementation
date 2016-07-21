@@ -1,16 +1,54 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
-class LinkedList{
     struct Node {
         int data;
         Node *next;
     };
+class LinkedList{
+
 public:
+	Node* head;
     LinkedList(){
         head = NULL;
     }
+    
+    LinkedList(int arr[], int size){
+    	
+    	
+    	Node* cur = NULL;
+    	for(int i=0;i<size;i++){
+    		if(cur ==NULL){
+    			Node* n = new Node();
+    			n->data = arr[i];
+    
+    			cur = n;
+    			this->head = cur;
+    		
+    		}
+    		else{
+    			
+    			Node* n1 = new Node();
+    		
+    			n1->data = arr[i];
+    			
+    			cur->next = n1;
+    			cur = n1;
+    		}
+    	}
+    }
+ 	void reverse(){
+ 		Node* prev = NULL;
+ 		Node* next = NULL;
+ 		Node* h = head;
+ 		while(h)
+{  			next = h->next;
+ 			h->next = prev;
+ 			prev = h;
+ 			h = next;
+ 		}
+ 		head = prev;
+ 	}
     void addValue(int val){
         Node *n = new Node();   
         n->data = val;    
@@ -24,7 +62,7 @@ public:
             tempNode=tempNode->next;
         }
         tempNode->next = cycleNode;
-    }  
+    }
     void hasLoop()
     {
         if(head != NULL)
@@ -75,7 +113,6 @@ public:
     void printList(){
         Node* tempNode = head;
         int counter = 1;
-        cout<<"head->data: " <<head->data << endl;
         while(tempNode != NULL){
             if(counter++ == 10){
                 cout <<"NULL" << endl;
@@ -83,24 +120,44 @@ public:
             }
             cout << tempNode->data << "->";
             tempNode = tempNode->next;
+
         }
-        
+        cout << endl;
     }
 private:
-    Node* head;
+    
 };
+LinkedList addLLs(LinkedList l1, LinkedList l2){
+	LinkedList newList;
+	l1.reverse();
+	l2.reverse();
+	Node* H = l1.head;
+	Node* H2 = l2.head;
+	int carry =0;
+
+	while(H || H2){
+		int sum = H->data + H2->data+carry;
+		carry =0;
+		if(sum >10)
+		{
+			carry = 1;
+			sum = sum%10;
+		}
+		newList.addValue(sum);
+		H = H->next;
+		H2 = H2->next;
+	}
+	return newList;
+}
 int main() {
-    LinkedList list;
-    list.addValue(5);
-    list.addValue(10);
-    list.addValue(15);
-    list.addValue(20);
-    list.addValue(25);
-    list.addValue(30);
-    list.addValue(35);
-    //list.middleElement();
-    list.createLoop();
-    list.printList();
-    list.hasLoop();
+	int arr[] = {1,2,3,4,5};
+	int arr2[] = {6,7,8,9,10};
+    LinkedList llist(arr,5);
+    LinkedList llist2(arr2,5);
+
+    llist.reverse();
+
+    LinkedList newList = addLLs(llist, llist2);
+    newList.printList();
     return 0;
 }
